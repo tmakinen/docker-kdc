@@ -37,7 +37,7 @@ RUN set -eux ; \
     } | tee /etc/supervisord.conf ; \
     { \
         echo "[program:kdcproxy]" ; \
-        echo "command = /usr/local/bin/gunicorn --bind :8000 -w 4 kdcproxy" ; \
+        echo "command = /usr/local/bin/gunicorn --no-control-socket --bind :8000 -w 4 kdcproxy" ; \
         echo "user = kdcproxy" ; \
         echo "environment = TMPDIR=/run/kdcproxy" ; \
         echo "redirect_stderr = true" ; \
