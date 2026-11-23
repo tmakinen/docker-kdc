@@ -25,3 +25,18 @@ jobs:
         run: shellcheck entrypoint.sh
       - name: Run yamllint
         run: yamllint .
+
+  build:
+    needs:
+      - lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Build Docker image
+        run: docker build -t kdc:latest .
