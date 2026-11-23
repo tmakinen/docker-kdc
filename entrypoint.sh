@@ -32,7 +32,7 @@ kerberos = kerberos+tcp://127.0.0.1:8888
 EOF
 
 export KRB5_KDC_PROFILE="/run/krb5kdc/kdc.conf"
-install -d -m 0700 "$(dirname "$KRB5_KDC_PROFILE")"
+install -d -m 0750 -o root -g kdc "$(dirname "$KRB5_KDC_PROFILE")"
 cat <<EOF > "$KRB5_KDC_PROFILE"
 [libdefaults]
   default_realm = ${KRB5_REALM}
@@ -77,6 +77,9 @@ EOF
 cat <<EOF | kdb5_util stash 
 $KRB5_STASH_PW
 EOF
+
+chmod 0640 "/run/krb5kdc/.k5.ldap.${KRB5_REALM}" "/run/krb5kdc/.k5.${KRB5_REALM}"
+chown root:kdc "/run/krb5kdc/.k5.ldap.${KRB5_REALM}" "/run/krb5kdc/.k5.${KRB5_REALM}"
 
 unset LDAP_BASEDN LDAP_BIND_PW LDAP_URI KRB5_REALM KRB5_STASH_PW
 

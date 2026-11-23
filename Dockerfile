@@ -17,7 +17,8 @@ RUN set -eux ; \
     rm -f /usr/local/src/requirements.txt
 
 RUN set -eux ; \
-    useradd -c "KDCProxy" -d /var/empty -M -r -s /sbin/nologin kdcproxy
+    useradd -c "KDCProxy" -d /var/empty -M -r -s /sbin/nologin kdcproxy ; \
+    useradd -c "KDC" -d /var/empty -M -r -s /sbin/nologin kdc
 
 COPY entrypoint.sh /entrypoint.sh
 
@@ -47,6 +48,7 @@ RUN set -eux ; \
     { \
         echo "[program:krb5kdc]" ; \
         echo "command = /usr/sbin/krb5kdc -n -w 4" ; \
+        echo "user = kdc" ; \
         echo "redirect_stderr = true" ; \
         echo "stdout_logfile = /dev/stdout" ; \
         echo "stdout_logfile_maxbytes = 0" ; \
