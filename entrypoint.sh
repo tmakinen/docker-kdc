@@ -28,7 +28,7 @@ cat <<EOF > "$KDCPROXY_CONFIG"
 [global]
 
 [${KRB5_REALM}]
-kerberos = kerberos+tcp://127.0.0.1
+kerberos = kerberos+tcp://127.0.0.1:8888
 EOF
 
 export KRB5_KDC_PROFILE="/run/krb5kdc/kdc.conf"
@@ -44,7 +44,7 @@ cat <<EOF > "$KRB5_KDC_PROFILE"
 
 [kdcdefaults]
   kdc_listen = ""
-  kdc_tcp_listen = 127.0.0.1:88
+  kdc_tcp_listen = 127.0.0.1:8888
 
 [realms]
   ${KRB5_REALM} = {
