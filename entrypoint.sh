@@ -38,13 +38,12 @@ cat <<EOF > "$KRB5_KDC_PROFILE"
   default_realm = ${KRB5_REALM}
 
 [logging]
-  kdc = STDERR
-  admin_server = STDERR
   default = STDERR
 
 [kdcdefaults]
   kdc_listen = ""
   kdc_tcp_listen = 127.0.0.1:8888
+  permitted_encryptes = aes256-cts-hmac-sha1-96,aes256-cts-hmac-sha384-192
 
 [realms]
   ${KRB5_REALM} = {
@@ -52,16 +51,13 @@ cat <<EOF > "$KRB5_KDC_PROFILE"
     key_stash_file = /run/krb5kdc/.k5.${KRB5_REALM}
     max_lifetime = 24h 0m 0s
     max_renewable_lifetime = 7d 0h 0m 0s
-    master_key_type = aes256-cts-hmac-sha1-96
-    permitted_encryptes = aes256-cts-hmac-sha1-96,aes256-cts-hmac-sha384-192
-    supported_enctypes = aes256-cts-hmac-sha384-192
   }
 
 [dbmodules]
   ldap.$(echo "${KRB5_REALM}" | tr '[:upper:]' '[:lower:]') = {
     db_library = kldap
     disable_last_success = true
-    disaable_lockout = true
+    disable_lockout = true
     ldap_kerberos_container_dn = "ou=System,${LDAP_BASEDN}"
     ldap_kdc_dn = "uid=krb5kdc,cn=${KRB5_REALM},ou=System,${LDAP_BASEDN}"
     ldap_kadmind_dn = "uid=krb5kdc,cn=${KRB5_REALM},ou=System,${LDAP_BASEDN}"
